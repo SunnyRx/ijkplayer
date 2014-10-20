@@ -25,7 +25,6 @@
 #include <pthread.h>
 #include <jni.h>
 #include "ijkutil/ijkutil.h"
-#include "ijkadk/ijkadk.h"
 #include "../ff_ffplay.h"
 #include "ijkplayer_android_def.h"
 #include "ijkplayer_android.h"
@@ -494,7 +493,7 @@ static int
 format_control_message(void *opaque, int type, void *data, size_t data_size)
 {
     JNIEnv *env = NULL;
-    SDL_AndroidJni_SetupThreadEnv(&env);
+    SDL_JNI_SetupThreadEnv(&env);
 
     jobject weak_thiz = (jobject) opaque;
     if (weak_thiz == NULL)
@@ -686,7 +685,6 @@ JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved)
     g_clazz.onControlResolveSegmentOfflineMrl = (*env)->GetStaticMethodID(env, g_clazz.clazz, "onControlResolveSegmentOfflineMrl", "(Ljava/lang/Object;I)Ljava/lang/String;");
     IJK_CHECK_RET(g_clazz.onControlResolveSegmentUrl, -1, "missing onControlResolveSegmentOfflineMrl");
 
-    ijkadk_global_init(env);
     ijkmp_global_init();
 
     return JNI_VERSION_1_4;

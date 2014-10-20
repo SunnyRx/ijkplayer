@@ -1,8 +1,8 @@
 /*****************************************************************************
- * ijkadkinternal.h
+ * ijksdl_codec_android_mediaformat_java.h
  *****************************************************************************
  *
- * copyright (c) 2013-2014 Zhang Rui <bbcallen@gmail.com>
+ * copyright (c) 2014 Zhang Rui <bbcallen@gmail.com>
  *
  * This file is part of ijkPlayer.
  *
@@ -21,32 +21,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef IJKADK__IJKADKINTERNAL_H
-#define IJKADK__IJKADKINTERNAL_H
+#ifndef IJKSDL_ANDROID__ANDROID_CODEC_ANDROID_MEDIAFORMAT_JAVA_H
+#define IJKSDL_ANDROID__ANDROID_CODEC_ANDROID_MEDIAFORMAT_JAVA_H
 
-#include <stdint.h>
-#include <jni.h>
-#include "ijkutil/ijkutil.h"
+#include "ijksdl_codec_android_mediaformat.h"
 
+int SDL_AMediaFormatJava__loadClass(JNIEnv *env);
 
-#define IJKADK_FIND_JAVA_CLASS(env__, var__, classsign__) \
-    do { \
-    	var__ = (*env__)->FindClass(env__, classsign__); \
-        if (!(var__)) { \
-            ALOGE("FindClass failed: %s", classsign__); \
-            return -1; \
-        } \
-    } while(0);
+SDL_AMediaFormat *SDL_AMediaFormatJava_new();
+jobject           SDL_AMediaFormatJava_getObject(JNIEnv *env, const SDL_AMediaFormat *thiz);
 
+#endif
 
-#define IJKADK_FIND_JAVA_METHOD(env__, var__, clazz__, funcsign__, retsign__) \
-    do { \
-	    (var__) = (*env__)->GetMethodID((env__), (clazz__), (funcsign__), (retsign__)); \
-	    if (!(var__)) { \
-	    	ALOGE("GetMethodID failed: %s", funcsign__); \
-            return -1; \
-	    } \
-	} while(0);
-
-
-#endif /* IJKADK__IJKADKINTERNAL_H */
