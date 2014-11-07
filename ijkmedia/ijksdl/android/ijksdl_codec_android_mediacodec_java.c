@@ -431,14 +431,9 @@ sdl_amedia_status_t SDL_AMediaCodecJava_releaseOutputBuffer(SDL_AMediaCodec* aco
     return SDL_AMEDIA_OK;
 }
 
-SDL_AMediaCodec* SDL_AMediaCodecJava_createDecoderByType(const char *mime_type)
+SDL_AMediaCodec* SDL_AMediaCodecJava_createDecoderByType(JNIEnv *env, const char *mime_type)
 {
     SDLTRACE("SDL_AMediaCodecJava_createDecoderByType");
-    JNIEnv *env = NULL;
-    if (JNI_OK != SDL_JNI_SetupThreadEnv(&env)) {
-        ALOGE("SDL_AndroidMediaCodec_createDecoderByType_java: SetupThreadEnv failed");
-        return NULL;
-    }
 
     jstring jmime_type = (*env)->NewStringUTF(env, mime_type);
     if (SDL_JNI_CatchException(env) || !jmime_type) {

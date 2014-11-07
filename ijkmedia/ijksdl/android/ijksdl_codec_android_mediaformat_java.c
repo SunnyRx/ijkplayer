@@ -220,14 +220,18 @@ static void SDL_AMediaFormatJava_setBuffer(SDL_AMediaFormat* aformat, const char
     }
 }
 
-SDL_AMediaFormat *SDL_AMediaFormatJava_new()
-{
-    JNIEnv *env = NULL;
-    if (JNI_OK != SDL_JNI_SetupThreadEnv(&env)) {
-        ALOGE("SDL_AMediaFormatJava_new: SetupThreadEnv failed");
-        return NULL;
-    }
+static void setup_aformat(SDL_AMediaFormat *aformat, jobject android_media_format) {
+    SDL_AMediaFormat_Opaque *opaque = aformat->opaque;
+    opaque->android_media_format = android_media_format;
 
+    aformat->func_delete    = SDL_AMediaFormatJava_delete;
+    aformat->func_getInt32  = SDL_AMediaFormatJava_getInt32;
+    aformat->func_setInt32  = SDL_AMediaFormatJava_setInt32;
+    aformat->func_setBuffer = SDL_AMediaFormatJava_setBuffer;
+}
+
+SDL_AMediaFormat *SDL_AMediaFormatJava_new(JNIEnv *env)
+{
     jobject android_media_format = SDL_JNI_NewObjectAsGlobalRef(env, g_clazz.clazz, g_clazz.jmid__ctor);
     if (SDL_JNI_CatchException(env) || !android_media_format) {
         return NULL;
@@ -239,14 +243,35 @@ SDL_AMediaFormat *SDL_AMediaFormatJava_new()
         return NULL;
     }
 
-    SDL_AMediaFormat_Opaque *opaque = aformat->opaque;
-    opaque->android_media_format = android_media_format;
-
-    aformat->func_delete    = SDL_AMediaFormatJava_delete;
-    aformat->func_getInt32  = SDL_AMediaFormatJava_getInt32;
-    aformat->func_setInt32  = SDL_AMediaFormatJava_setInt32;
-    aformat->func_setBuffer = SDL_AMediaFormatJava_setBuffer;
-
+    setup_aformat(aformat, android_media_format);
     return aformat;
 }
 
+SDL_AMediaFormat *SDL_AMediaFormatJava_createVideoFormat(JNIEnv *env, const char *mime, int width, int height)
+{
+    jstring jmime = (*env)->NewStringUTF(env, mime);
+    if (SDL_JNI_CatchException(env) || !jmime) {
+        return NULL;
+    }
+
+    jobject local_android_media_format = (*env)->CallStaticObjectMethod(env, g_clazz.clazz, g_clazz.jmid_createVideoFormat, jmime, width, height);
+    SDL_JNI_DeleteLocalRefP(env, &jmime);
+    if (SDL_JNI_CatchException(env) || !local_android_media_format) {
+        return NULL;
+    }
+
+    jobject global_android_media_format = (*env)->NewGlobalRef(env, local_android_media_format);
+    SDL_JNI_DeleteLocalRefP(env, &local_android_media_format);
+    if (SDL_JNI_CatchException(env) || !global_android_media_format) {
+        return NULL;
+    }
+
+    SDL_AMediaFormat *aformat = SDL_AMediaFormat_CreateInternal(sizeof(SDL_AMediaFormat_Opaque));
+    if (!aformat) {
+        SDL_JNI_DeleteGlobalRefP(env, &global_android_media_format);
+        return NULL;
+    }
+
+    setup_aformat(aformat, global_android_media_format);
+    return aformat;
+}

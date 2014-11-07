@@ -28,7 +28,8 @@
 
 int SDL_AMediaFormatJava__loadClass(JNIEnv *env);
 
-SDL_AMediaFormat *SDL_AMediaFormatJava_new();
+SDL_AMediaFormat *SDL_AMediaFormatJava_new(JNIEnv *env);
+SDL_AMediaFormat *SDL_AMediaFormatJava_createVideoFormat(JNIEnv *env, const char *mime, int width, int height);
 jobject           SDL_AMediaFormatJava_getObject(JNIEnv *env, const SDL_AMediaFormat *thiz);
 
 #endif

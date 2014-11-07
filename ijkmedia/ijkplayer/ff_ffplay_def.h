@@ -389,6 +389,7 @@ static SDL_Surface *screen;
  ****************************************************************************/
 
 /* ffplayer */
+typedef struct IJK_HWDecoderContext IJK_HWDecoderContext;
 typedef struct FFPlayer {
     /* ffplay context */
     VideoState *is;
@@ -468,6 +469,7 @@ typedef struct FFPlayer {
     /* extra fields */
     SDL_Aout *aout;
     SDL_Vout *vout;
+    IJK_HWDecoderContext *hw_decoder_context;
     int sar_num;
     int sar_den;
 

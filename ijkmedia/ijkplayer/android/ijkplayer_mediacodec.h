@@ -1,8 +1,7 @@
-/*****************************************************************************
- * ijksdl_codec_android_mediacodec_java.h
- *****************************************************************************
+/*
+ * ijkplayer_android.h
  *
- * copyright (c) 2014 Zhang Rui <bbcallen@gmail.com>
+ * Copyright (c) 2013 Zhang Rui <bbcallen@gmail.com>
  *
  * This file is part of ijkPlayer.
  *
@@ -21,16 +20,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef IJKSDL_ANDROID__ANDROID_CODEC_ANDROID_MEDIACODEC_JAVA_H
-#define IJKSDL_ANDROID__ANDROID_CODEC_ANDROID_MEDIACODEC_JAVA_H
+#ifndef IJKPLAYER_ANDROID__IJKPLAYER_MEDIACODEC_H
+#define IJKPLAYER_ANDROID__IJKPLAYER_MEDIACODEC_H
 
-#include "ijksdl_codec_android_mediacodec.h"
-
-typedef struct ASDK_MediaCodec ASDK_MediaCodec;
-
-int SDL_AMediaCodecJava__loadClass(JNIEnv *env);
-
-SDL_AMediaCodec* SDL_AMediaCodecJava_createDecoderByType(JNIEnv *env, const char *mime_type);
-jobject          SDL_AMediaCodecJava_getObject(JNIEnv *env, const SDL_AMediaCodec *thiz);
+void vdec_amc_set_surface(JNIEnv *env, IjkMediaPlayer *mp, jobject android_surface);
 
 #endif

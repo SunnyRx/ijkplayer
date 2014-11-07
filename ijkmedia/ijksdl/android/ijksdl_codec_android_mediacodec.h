@@ -28,7 +28,7 @@
 #include <stdbool.h>
 #include <jni.h>
 #include <sys/types.h>
-#include "ijksdl_mutex.h"
+#include "../ijksdl_mutex.h"
 #include "ijksdl_codec_android_mediadef.h"
 #include "android_nativewindow.h"
 

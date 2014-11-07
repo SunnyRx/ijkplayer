@@ -46,5 +46,46 @@ typedef enum sdl_amedia_status_t {
     SDL_AMEDIA_DRM_LICENSE_EXPIRED         = SDL_AMEDIA_DRM_ERROR_BASE - 9,
 } sdl_amedia_status_t;
 
+#define SDL_AMIME_VIDEO_VP8         "video/x-vnd.on2.vp8"   //- VP8 video (i.e. video in .webm)
+#define SDL_AMIME_VIDEO_VP9         "video/x-vnd.on2.vp9"   //- VP9 video (i.e. video in .webm)
+#define SDL_AMIME_VIDEO_AVC         "video/avc"             //- H.264/AVC video
+#define SDL_AMIME_VIDEO_HEVC        "video/hevc"            //- H.265/HEVC video
+#define SDL_AMIME_VIDEO_MPEG4       "video/mp4v-es"         //- MPEG4 video
+#define SDL_AMIME_VIDEO_H264        "video/3gpp"            //- H.263 video
+#define SDL_AMIME_AUDIO_AMR_NB      "audio/3gpp"            //- AMR narrowband audio
+#define SDL_AMIME_AUDIO_AMR_WB      "audio/amr-wb"          //- AMR wideband audio
+#define SDL_AMIME_AUDIO_MP3         "audio/mpeg"            //- MPEG1/2 audio layer III
+#define SDL_AMIME_AUDIO_RAW_AAC     "audio/mp4a-latm"       //- AAC audio (note, this is raw AAC packets, not packaged in LATM!)
+#define SDL_AMIME_AUDIO_VORBIS      "audio/vorbis"          //- vorbis audio
+#define SDL_AMIME_AUDIO_G711_ALAW   "audio/g711-alaw"       //- G.711 alaw audio
+#define SDL_AMIME_AUDIO_G711_MLAW   "audio/g711-mlaw"       //- G.711 ulaw audio
+
+typedef enum sdl_amedia_format_key_t {
+    AMEDIAFORMAT_KEY_AAC_PROFILE,
+    AMEDIAFORMAT_KEY_BIT_RATE,
+    AMEDIAFORMAT_KEY_CHANNEL_COUNT,
+    AMEDIAFORMAT_KEY_CHANNEL_MASK,
+    AMEDIAFORMAT_KEY_COLOR_FORMAT,
+    AMEDIAFORMAT_KEY_DURATION,
+    AMEDIAFORMAT_KEY_FLAC_COMPRESSION_LEVEL,
+    AMEDIAFORMAT_KEY_FRAME_RATE,
+    AMEDIAFORMAT_KEY_HEIGHT,
+    AMEDIAFORMAT_KEY_IS_ADTS,
+    AMEDIAFORMAT_KEY_IS_AUTOSELECT,
+    AMEDIAFORMAT_KEY_IS_DEFAULT,
+    AMEDIAFORMAT_KEY_IS_FORCED_SUBTITLE,
+    AMEDIAFORMAT_KEY_I_FRAME_INTERVAL,
+    AMEDIAFORMAT_KEY_LANGUAGE,
+    AMEDIAFORMAT_KEY_MAX_HEIGHT,
+    AMEDIAFORMAT_KEY_MAX_INPUT_SIZE,
+    AMEDIAFORMAT_KEY_MAX_WIDTH,
+    AMEDIAFORMAT_KEY_MIME,
+    AMEDIAFORMAT_KEY_PUSH_BLANK_BUFFERS_ON_STOP,
+    AMEDIAFORMAT_KEY_REPEAT_PREVIOUS_FRAME_AFTER,
+    AMEDIAFORMAT_KEY_SAMPLE_RATE,
+    AMEDIAFORMAT_KEY_WIDTH,
+    AMEDIAFORMAT_KEY_STRIDE,
+} sdl_amedia_format_key_t;
+
 #endif
 
