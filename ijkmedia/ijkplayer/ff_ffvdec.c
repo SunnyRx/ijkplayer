@@ -1,5 +1,5 @@
 /*
- * ff_ffplay_vdec.c
+ * ff_ffvdec.c
  *
  * Copyright (c) 2003 Fabrice Bellard
  * Copyright (c) 2014 Zhang Rui <bbcallen@gmail.com>
@@ -21,7 +21,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "ff_ffplay_vdec.inc.h"
+#include "ff_ffvdec.h"
 
 IJKFF_VideoDecoder *ffvdec_alloc(size_t opaque_size)
 {
@@ -69,7 +69,7 @@ void ffvdec_free_p(IJKFF_VideoDecoder **vdec)
     ffvdec_free(vdec);
 }
 
-int ffvdec_setup(IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue* packet_queue)
+int ffvdec_setup(IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue *packet_queue)
 {
     return vdec->func_setup(vdec, ffp, packet_queue);
 }

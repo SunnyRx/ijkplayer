@@ -1,5 +1,5 @@
 /*
- * ff_ffplay_vdec.h
+ * ff_ffvdec.h
  *
  * Copyright (c) 2003 Fabrice Bellard
  * Copyright (c) 2014 Zhang Rui <bbcallen@gmail.com>
@@ -21,8 +21,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef FFPLAY__FF_FFPLAY_VDEC_H
-#define FFPLAY__FF_FFPLAY_VDEC_H
+#ifndef FFPLAY__FF_FFVDEC_H
+#define FFPLAY__FF_FFVDEC_H
 
 #include "ijksdl/ijksdl_mutex.h"
 
@@ -36,7 +36,7 @@ typedef struct IJKFF_VideoDecoder {
     SDL_mutex *mutex;
     void *opaque;
 
-    int  (*func_setup)              (IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue* packet_queue);
+    int  (*func_setup)              (IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue *packet_queue);
     void (*func_destroy)            (IJKFF_VideoDecoder *vdec);
     int  (*func_start)              (IJKFF_VideoDecoder *vdec);
     int  (*func_stop)               (IJKFF_VideoDecoder *vdec);
@@ -47,7 +47,7 @@ IJKFF_VideoDecoder *ffvdec_alloc(size_t opaque_size);
 void ffvdec_free(IJKFF_VideoDecoder *vdec);
 void ffvdec_free_p(IJKFF_VideoDecoder **vdec);
 
-int  ffvdec_setup              (IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue* packet_queue);
+int  ffvdec_setup              (IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue *packet_queue);
 int  ffvdec_start              (IJKFF_VideoDecoder *vdec);
 int  ffvdec_stop               (IJKFF_VideoDecoder *vdec);
 int  ffvdec_dequeue_video_frame(IJKFF_VideoDecoder *vdec, AVFrame *frame);
