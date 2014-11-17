@@ -1,5 +1,5 @@
 /*
- * ijkplayer_android.h
+ * ff_ffvdec_android_mediacodec.h
  *
  * Copyright (c) 2013 Zhang Rui <bbcallen@gmail.com>
  *
@@ -20,10 +20,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef IJKPLAYER_ANDROID__IJKPLAYER_MEDIACODEC_H
-#define IJKPLAYER_ANDROID__IJKPLAYER_MEDIACODEC_H
+#ifndef IJKPLAYER_ANDROID__FF_FFVDEC_ANDROID_MEDIACODEC_H
+#define IJKPLAYER_ANDROID__FF_FFVDEC_ANDROID_MEDIACODEC_H
 
-typedef struct FFPlayer FFPlayer;
-void ijkvdec_set_surface(JNIEnv *env, FFPlayer *mp, jobject android_surface);
+#include <jni.h>
+
+typedef struct IJKFF_VideoDecoder IJKFF_VideoDecoder;
+
+IJKFF_VideoDecoder *ffvdec_android_mediacodec_create();
+IJKFF_VideoDecoder *ffvdec_android_mediacodec_set_surface(JNIEnv *env, IJKFF_VideoDecoder* vdec, jobject surface);
 
 #endif

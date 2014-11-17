@@ -389,7 +389,7 @@ static SDL_Surface *screen;
  ****************************************************************************/
 
 /* ffplayer */
-typedef struct IJK_HWDecoderContext IJK_HWDecoderContext;
+typedef struct IJKFF_VideoDecoder IJKFF_VideoDecoder;
 typedef struct FFPlayer {
     /* ffplay context */
     VideoState *is;
@@ -469,7 +469,7 @@ typedef struct FFPlayer {
     /* extra fields */
     SDL_Aout *aout;
     SDL_Vout *vout;
-    IJK_HWDecoderContext *hw_decoder_context;
+    IJKFF_VideoDecoder *ffvdec;
     int sar_num;
     int sar_den;
 
@@ -553,6 +553,7 @@ inline static void ffp_reset_internal(FFPlayer *ffp)
     /* extra fields */
     ffp->aout                   = NULL; /* reset outside */
     ffp->vout                   = NULL; /* reset outside */
+    ffp->ffvdec                 = NULL;
     ffp->sar_num                = 0;
     ffp->sar_den                = 0;
 

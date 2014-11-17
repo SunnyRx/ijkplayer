@@ -1511,7 +1511,7 @@ static int video_thread(void *arg)
 #endif
 
     IJKFF_VideoDecoder* vdec = ffvdec_avcodec_create(get_video_frame);
-    ffvdec_setup(vdec, ffp, is->viddec.queue);
+    ffvdec_setup(vdec, ffp, &is->viddec);
     ffvdec_start(vdec);
 
     for (;;) {
@@ -2861,6 +2861,7 @@ void ffp_destroy(FFPlayer *ffp)
 
     SDL_VoutFreeP(&ffp->vout);
     SDL_AoutFreeP(&ffp->aout);
+    ffvdec_free_p(&ffp->ffvdec);
     ffp_reset_internal(ffp);
 
     msg_queue_destroy(&ffp->msg_queue);

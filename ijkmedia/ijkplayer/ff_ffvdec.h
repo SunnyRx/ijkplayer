@@ -28,7 +28,7 @@
 
 typedef struct FFPlayer     FFPlayer;
 typedef struct AVFrame      AVFrame;
-typedef struct PacketQueue  PacketQueue;
+typedef struct Decoder      Decoder;
 
 typedef struct IJKFF_VideoDecoder_Opaque IJKFF_VideoDecoder_Opaque;
 typedef struct IJKFF_VideoDecoder IJKFF_VideoDecoder;
@@ -36,7 +36,7 @@ typedef struct IJKFF_VideoDecoder {
     SDL_mutex *mutex;
     void *opaque;
 
-    int  (*func_setup)              (IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue *packet_queue);
+    int  (*func_setup)              (IJKFF_VideoDecoder *vdec, FFPlayer *ffp, Decoder *decoder);
     void (*func_destroy)            (IJKFF_VideoDecoder *vdec);
     int  (*func_start)              (IJKFF_VideoDecoder *vdec);
     int  (*func_stop)               (IJKFF_VideoDecoder *vdec);
@@ -47,7 +47,7 @@ IJKFF_VideoDecoder *ffvdec_alloc(size_t opaque_size);
 void ffvdec_free(IJKFF_VideoDecoder *vdec);
 void ffvdec_free_p(IJKFF_VideoDecoder **vdec);
 
-int  ffvdec_setup              (IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue *packet_queue);
+int  ffvdec_setup              (IJKFF_VideoDecoder *vdec, FFPlayer *ffp, Decoder *decoder);
 int  ffvdec_start              (IJKFF_VideoDecoder *vdec);
 int  ffvdec_stop               (IJKFF_VideoDecoder *vdec);
 int  ffvdec_dequeue_video_frame(IJKFF_VideoDecoder *vdec, AVFrame *frame);

@@ -27,7 +27,7 @@
 #include "../ff_fferror.h"
 #include "../ff_ffplay.h"
 #include "../ijkplayer_internal.h"
-#include "ijkplayer_mediacodec.h"
+#include "ff_ffvdec_android_mediacodec.h"
 
 IjkMediaPlayer *ijkmp_android_create(int(*msg_loop)(void*))
 {
@@ -41,6 +41,10 @@ IjkMediaPlayer *ijkmp_android_create(int(*msg_loop)(void*))
 
     mp->ffplayer->aout = SDL_AoutAndroid_CreateForAudioTrack();
     if (!mp->ffplayer->aout)
+        goto fail;
+
+    mp->ffplayer->ffvdec = ffvdec_android_mediacodec_create();
+    if (!mp->ffplayer->ffvdec)
         goto fail;
 
     return mp;

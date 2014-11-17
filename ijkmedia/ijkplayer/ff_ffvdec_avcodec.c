@@ -24,16 +24,16 @@
 
 typedef struct IJKFF_VideoDecoder_Opaque {
     FFPlayer    *ffp;
-    PacketQueue *packet_queue;
+    Decoder     *decoder;
 
-    int (*func_get_video_frame)(FFPlayer *ffp, AVFrame *frame);
+    int        (*func_get_video_frame)(FFPlayer *ffp, AVFrame *frame);
 } IJKFF_VideoDecoder_Opaque;
 
-static int ffvdec_avcodec_setup(IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue *packet_queue)
+static int ffvdec_avcodec_setup(IJKFF_VideoDecoder *vdec, FFPlayer *ffp, Decoder *decoder)
 {
     IJKFF_VideoDecoder_Opaque *opaque = vdec->opaque;
-    opaque->ffp = ffp;
-    opaque->packet_queue = packet_queue;
+    opaque->ffp     = ffp;
+    opaque->decoder = decoder;
     return 0;
 }
 

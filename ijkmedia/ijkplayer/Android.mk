@@ -40,7 +40,7 @@ LOCAL_SRC_FILES += ijkplayer.c
 
 LOCAL_SRC_FILES += android/ijkplayer_android.c
 LOCAL_SRC_FILES += android/ijkplayer_jni.c
-LOCAL_SRC_FILES += android/ijkplayer_mediacodec.c
+LOCAL_SRC_FILES += android/ff_ffvdec_android_mediacodec.c
 
 LOCAL_SHARED_LIBRARIES := ijkffmpeg ijkutil ijksdl ijkadk
 

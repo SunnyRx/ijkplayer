@@ -69,9 +69,9 @@ void ffvdec_free_p(IJKFF_VideoDecoder **vdec)
     ffvdec_free(vdec);
 }
 
-int ffvdec_setup(IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue *packet_queue)
+int ffvdec_setup(IJKFF_VideoDecoder *vdec, FFPlayer *ffp, Decoder *decoder)
 {
-    return vdec->func_setup(vdec, ffp, packet_queue);
+    return vdec->func_setup(vdec, ffp, decoder);
 }
 
 int ffvdec_start(IJKFF_VideoDecoder *vdec)
