@@ -34,6 +34,8 @@ LOCAL_C_INCLUDES += $(MY_APP_FFMPEG_INCLUDE_PATH)
 
 LOCAL_SRC_FILES += ff_cmdutils.c
 LOCAL_SRC_FILES += ff_ffplay.c
+LOCAL_SRC_FILES += ff_ffvdec.c
+LOCAL_SRC_FILES += ff_ffvdec_avcodec.c
 LOCAL_SRC_FILES += ijkplayer.c
 
 LOCAL_SRC_FILES += android/ijkplayer_android.c

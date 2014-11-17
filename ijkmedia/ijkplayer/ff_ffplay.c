@@ -26,6 +26,8 @@
 #include <math.h>
 #include "ff_cmdutils.h"
 #include "ff_fferror.h"
+#include "ff_ffvdec.h"
+#include "ff_ffvdec_avcodec.h"
 
 // FIXME: 9 work around NDKr8e or gcc4.7 bug
 // isnan() may not recognize some double NAN, so we test both double and float
@@ -1508,8 +1510,12 @@ static int video_thread(void *arg)
     int last_vfilter_idx = 0;
 #endif
 
+    IJKFF_VideoDecoder* vdec = ffvdec_avcodec_create(get_video_frame);
+    ffvdec_setup(vdec, ffp, is->viddec.queue);
+    ffvdec_start(vdec);
+
     for (;;) {
-        ret = get_video_frame(ffp, frame);
+        ret = ffvdec_dequeue_video_frame(vdec, frame);
         if (ret < 0)
             goto the_end;
         if (!ret)
@@ -1578,6 +1584,9 @@ static int video_thread(void *arg)
             goto the_end;
     }
  the_end:
+    if (vdec)
+        ffvdec_stop(vdec);
+    ffvdec_free_p(&vdec);
 #if CONFIG_AVFILTER
     avfilter_graph_free(&graph);
 #endif

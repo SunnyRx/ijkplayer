@@ -1,7 +1,6 @@
 /*
- * ff_ffvdec_avcodec.inc.c
+ * ff_ffvdec_avcodec.c
  *
- * Copyright (c) 2003 Fabrice Bellard
  * Copyright (c) 2014 Zhang Rui <bbcallen@gmail.com>
  *
  * This file is part of ijkPlayer.
@@ -26,6 +25,8 @@
 typedef struct IJKFF_VideoDecoder_Opaque {
     FFPlayer    *ffp;
     PacketQueue *packet_queue;
+
+    int (*func_get_video_frame)(FFPlayer *ffp, AVFrame *frame);
 } IJKFF_VideoDecoder_Opaque;
 
 static int ffvdec_avcodec_setup(IJKFF_VideoDecoder *vdec, FFPlayer *ffp, PacketQueue *packet_queue)
@@ -43,28 +44,28 @@ static void ffvdec_avcodec_destroy(IJKFF_VideoDecoder *vdec)
 
 static int ffvdec_avcodec_start(IJKFF_VideoDecoder *vdec)
 {
-    // do nothing
+    return 0;
 }
 
 static int ffvdec_avcodec_stop(IJKFF_VideoDecoder *vdec)
 {
-    // do nothing
+    return 0;
 }
 
 static int ffvdec_avcodec_dequeue_video_frame(IJKFF_VideoDecoder *vdec, AVFrame *frame)
 {
-    return get_video_frame();
+    IJKFF_VideoDecoder_Opaque *opaque = vdec->opaque;
+    return opaque->func_get_video_frame(opaque->ffp, frame);
 }
 
-IJKFF_VideoDecoder *ffvdec_avcodec_create()
+IJKFF_VideoDecoder *ffvdec_avcodec_create(int (*func_get_video_frame)(FFPlayer *ffp, AVFrame *frame))
 {
     IJKFF_VideoDecoder *vdec = ffvdec_alloc(sizeof(IJKFF_VideoDecoder_Opaque));
     if (!vdec)
         return vdec;
 
     IJKFF_VideoDecoder_Opaque *opaque = vdec->opaque;
-    opaque->ffp          = ffp;
-    opaque->packet_queue = packet_queue;
+    opaque->func_get_video_frame = func_get_video_frame;
 
     vdec->func_setup   = ffvdec_avcodec_setup;
     vdec->func_destroy = ffvdec_avcodec_destroy;

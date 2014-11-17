@@ -25,11 +25,11 @@
 
 IJKFF_VideoDecoder *ffvdec_alloc(size_t opaque_size)
 {
-    IJKFF_VideoDecoder *vdec = (IJKFF_VideoDecoder*) mallocz(sizeof(IJKFF_VideoDecoder));
+    IJKFF_VideoDecoder *vdec = (IJKFF_VideoDecoder*) calloc(1, sizeof(IJKFF_VideoDecoder));
     if (!vdec)
         return NULL;
 
-    vdec->opaque = mallocz(opaque_size);
+    vdec->opaque = calloc(1, opaque_size);
     if (!vdec->opaque) {
         free(vdec);
         return NULL;
