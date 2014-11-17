@@ -74,3 +74,48 @@ IJKFF_VideoDecoder *ffvdec_avcodec_create(int (*func_get_video_frame)(FFPlayer *
     vdec->func_dequeue_video_frame = ffvdec_avcodec_dequeue_video_frame;
     return vdec;
 }
+
+
+
+
+
+typedef struct IJKFF_VideoDecoderFactory_Opaque {
+    int (*func_get_video_frame)(FFPlayer *ffp, AVFrame *frame);
+} IJKFF_VideoDecoderFactory_Opaque;
+
+static void ffvdec_avcodec_factory_destroy(IJKFF_VideoDecoderFactory *factory)
+{
+    // do nothing
+}
+
+static IJKFF_VideoDecoder *ffvdec_avcodec_factory_open_decoder(IJKFF_VideoDecoderFactory *factory, FFPlayer *ffp, Decoder *decoder)
+{
+    IJKFF_VideoDecoderFactory_Opaque *opaque = factory->opaque;
+    if (!opaque)
+        return NULL;
+
+    IJKFF_VideoDecoder *vdec = ffvdec_avcodec_create(opaque->func_get_video_frame);
+    if (!vdec)
+        return NULL;
+
+    if (ffvdec_setup(vdec, ffp, decoder) < 0) {
+        ffvdec_free_p(&vdec);
+        return NULL;
+    }
+
+    return vdec;
+}
+
+IJKFF_VideoDecoderFactory *ffvdec_avcodec_factory_create(int (*func_get_video_frame)(FFPlayer *ffp, AVFrame *frame))
+{
+    IJKFF_VideoDecoderFactory *factory = ffvdec_factory_alloc(sizeof(IJKFF_VideoDecoderFactory_Opaque));
+    if (!factory)
+        return factory;
+
+    IJKFF_VideoDecoderFactory_Opaque *opaque = factory->opaque;
+    opaque->func_get_video_frame = func_get_video_frame;
+
+    factory->func_open_decoder = ffvdec_avcodec_factory_open_decoder;
+    factory->func_destroy      = ffvdec_avcodec_factory_destroy;
+    return factory;
+}

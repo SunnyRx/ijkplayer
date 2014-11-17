@@ -98,14 +98,14 @@ static int ffvdec_android_mediacodec_setup(IJKFF_VideoDecoder *vdec, FFPlayer *f
 
     JNIEnv *env = NULL;
     if (JNI_OK != SDL_JNI_SetupThreadEnv(&env)) {
-        ALOGE("ffvdec_amediacodec_setup: SetupThreadEnv failed\n");
+        ALOGE("ffvdec_android_mediacodec_setup: SetupThreadEnv failed\n");
         return -1;
     }
 
     opaque->avctx = avctx;
     opaque->acodec = SDL_AMediaCodecJava_createDecoderByType(env, codec_mime);
     if (!opaque->acodec) {
-        ALOGE("ffvdec_amediacodec_setup: SDL_AMediaCodecJava_createDecoderByType failed\n");
+        ALOGE("ffvdec_android_mediacodec_setup: SDL_AMediaCodecJava_createDecoderByType failed\n");
         return -1;
     }
 
@@ -169,11 +169,11 @@ IJKFF_VideoDecoder *ffvdec_android_mediacodec_create()
     return vdec;
 }
 
-IJKFF_VideoDecoder *ffvdec_android_mediacodec_set_surface(JNIEnv *env, IJKFF_VideoDecoder* vdec, jobject surface)
+int ffvdec_android_mediacodec_set_surface(JNIEnv *env, IJKFF_VideoDecoder* vdec, jobject surface)
 {
     IJKFF_VideoDecoder_Opaque *opaque = vdec->opaque;
     if (!opaque->surface_mutex)
-        return NULL;
+        return -1;
 
     SDL_LockMutex(opaque->surface_mutex);
     {
@@ -184,4 +184,46 @@ IJKFF_VideoDecoder *ffvdec_android_mediacodec_set_surface(JNIEnv *env, IJKFF_Vid
         }
     }
     SDL_UnlockMutex(opaque->surface_mutex);
+
+    return 0;
 }
+
+
+
+
+typedef struct IJKFF_VideoDecoderFactory_Opaque {
+} IJKFF_VideoDecoderFactory_Opaque;
+
+static void ffvdec_android_mediacodec_factory_destroy(IJKFF_VideoDecoderFactory *factory)
+{
+    // do nothing
+}
+
+static IJKFF_VideoDecoder *ffvdec_android_mediecodec_factory_open_decoder(IJKFF_VideoDecoderFactory *factory, FFPlayer *ffp, Decoder *decoder)
+{
+    IJKFF_VideoDecoderFactory_Opaque *opaque = factory->opaque;
+    if (!opaque)
+        return NULL;
+
+    IJKFF_VideoDecoder *vdec = ffvdec_android_mediacodec_create();
+    if (ffvdec_setup(vdec, ffp, decoder) < 0) {
+        ffvdec_free_p(&vdec);
+        return NULL;
+    }
+
+    return vdec;
+}
+
+IJKFF_VideoDecoderFactory *ffvdec_android_mediacodec_factory_create()
+{
+    IJKFF_VideoDecoderFactory *factory = ffvdec_factory_alloc(sizeof(IJKFF_VideoDecoderFactory_Opaque));
+    if (!factory)
+        return factory;
+
+    // IJKFF_VideoDecoderFactory_Opaque *opaque = factory->opaque;
+
+    factory->func_open_decoder = ffvdec_android_mediecodec_factory_open_decoder;
+    factory->func_destroy      = ffvdec_android_mediacodec_factory_destroy;
+    return factory;
+}
+

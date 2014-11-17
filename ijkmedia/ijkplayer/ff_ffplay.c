@@ -2861,7 +2861,7 @@ void ffp_destroy(FFPlayer *ffp)
 
     SDL_VoutFreeP(&ffp->vout);
     SDL_AoutFreeP(&ffp->aout);
-    ffvdec_free_p(&ffp->ffvdec);
+    ffvdec_factory_free_p(&ffp->ffvdec_factory);
     ffp_reset_internal(ffp);
 
     msg_queue_destroy(&ffp->msg_queue);

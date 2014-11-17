@@ -43,8 +43,8 @@ IjkMediaPlayer *ijkmp_android_create(int(*msg_loop)(void*))
     if (!mp->ffplayer->aout)
         goto fail;
 
-    mp->ffplayer->ffvdec = ffvdec_android_mediacodec_create();
-    if (!mp->ffplayer->ffvdec)
+    mp->ffplayer->ffvdec_factory = ffvdec_android_mediacodec_factory_create();
+    if (!mp->ffplayer->ffvdec_factory)
         goto fail;
 
     return mp;

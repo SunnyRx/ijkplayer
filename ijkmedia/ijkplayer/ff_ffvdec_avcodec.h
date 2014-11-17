@@ -25,4 +25,6 @@
 
 IJKFF_VideoDecoder *ffvdec_avcodec_create(int (*func_get_video_frame)(FFPlayer *ffp, AVFrame *frame));
 
+IJKFF_VideoDecoderFactory *ffvdec_avcodec_factory_create(int (*func_get_video_frame)(FFPlayer *ffp, AVFrame *frame));
+
 #endif

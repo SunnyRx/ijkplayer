@@ -66,7 +66,7 @@ void ffvdec_free_p(IJKFF_VideoDecoder **vdec)
     if (!vdec)
         return;
 
-    ffvdec_free(vdec);
+    ffvdec_free(*vdec);
 }
 
 int ffvdec_setup(IJKFF_VideoDecoder *vdec, FFPlayer *ffp, Decoder *decoder)
@@ -87,4 +87,44 @@ int ffvdec_stop(IJKFF_VideoDecoder *vdec)
 int ffvdec_dequeue_video_frame(IJKFF_VideoDecoder *vdec, AVFrame *frame)
 {
     return vdec->func_dequeue_video_frame(vdec, frame);
+}
+
+
+
+
+IJKFF_VideoDecoderFactory *ffvdec_factory_alloc(size_t opaque_size)
+{
+    IJKFF_VideoDecoderFactory *factory = (IJKFF_VideoDecoderFactory*) calloc(1, sizeof(IJKFF_VideoDecoderFactory));
+    if (!factory)
+        return NULL;
+
+    factory->opaque = calloc(1, opaque_size);
+    if (!factory->opaque) {
+        free(factory);
+        return NULL;
+    }
+
+    return factory;
+}
+
+void ffvdec_factory_free(IJKFF_VideoDecoderFactory *factory)
+{
+    if (!factory)
+        return;
+
+    if (factory->func_destroy) {
+        factory->func_destroy(factory);
+    }
+
+    free(factory->opaque);
+    memset(factory, 0, sizeof(IJKFF_VideoDecoderFactory));
+    free(factory);
+}
+
+void ffvdec_factory_free_p(IJKFF_VideoDecoderFactory **factory)
+{
+    if (!factory)
+        return;
+
+    ffvdec_factory_free(*factory);
 }

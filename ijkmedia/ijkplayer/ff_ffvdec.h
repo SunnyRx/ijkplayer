@@ -52,4 +52,20 @@ int  ffvdec_start              (IJKFF_VideoDecoder *vdec);
 int  ffvdec_stop               (IJKFF_VideoDecoder *vdec);
 int  ffvdec_dequeue_video_frame(IJKFF_VideoDecoder *vdec, AVFrame *frame);
 
+
+
+typedef struct IJKFF_VideoDecoderFactory_Opaque IJKFF_VideoDecoderFactory_Opaque;
+typedef struct IJKFF_VideoDecoderFactory IJKFF_VideoDecoderFactory;
+typedef struct IJKFF_VideoDecoderFactory {
+    void *opaque;
+
+    IJKFF_VideoDecoder *(*func_open_decoder) (IJKFF_VideoDecoderFactory *factory, FFPlayer *ffp, Decoder *decoder);
+    void                (*func_destroy)      (IJKFF_VideoDecoderFactory *factory);
+} IJKFF_VideoDecoderFactory;
+
+IJKFF_VideoDecoderFactory *ffvdec_factory_alloc(size_t opaque_size);
+void ffvdec_factory_free(IJKFF_VideoDecoderFactory *factory);
+void ffvdec_factory_free_p(IJKFF_VideoDecoderFactory **factory);
+
+
 #endif

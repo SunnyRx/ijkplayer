@@ -24,10 +24,11 @@
 #define IJKPLAYER_ANDROID__FF_FFVDEC_ANDROID_MEDIACODEC_H
 
 #include <jni.h>
-
-typedef struct IJKFF_VideoDecoder IJKFF_VideoDecoder;
+#include "../ff_ffvdec.h"
 
 IJKFF_VideoDecoder *ffvdec_android_mediacodec_create();
-IJKFF_VideoDecoder *ffvdec_android_mediacodec_set_surface(JNIEnv *env, IJKFF_VideoDecoder* vdec, jobject surface);
+int ffvdec_android_mediacodec_set_surface(JNIEnv *env, IJKFF_VideoDecoder* vdec, jobject surface);
+
+IJKFF_VideoDecoderFactory *ffvdec_android_mediacodec_factory_create();
 
 #endif
