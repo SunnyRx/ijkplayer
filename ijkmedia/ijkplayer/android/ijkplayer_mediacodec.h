@@ -23,6 +23,7 @@
 #ifndef IJKPLAYER_ANDROID__IJKPLAYER_MEDIACODEC_H
 #define IJKPLAYER_ANDROID__IJKPLAYER_MEDIACODEC_H
 
-void vdec_amc_set_surface(JNIEnv *env, IjkMediaPlayer *mp, jobject android_surface);
+typedef struct FFPlayer FFPlayer;
+void ijkvdec_set_surface(JNIEnv *env, FFPlayer *mp, jobject android_surface);
 
 #endif

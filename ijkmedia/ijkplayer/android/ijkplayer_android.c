@@ -27,6 +27,7 @@
 #include "../ff_fferror.h"
 #include "../ff_ffplay.h"
 #include "../ijkplayer_internal.h"
+#include "ijkplayer_mediacodec.h"
 
 IjkMediaPlayer *ijkmp_android_create(int(*msg_loop)(void*))
 {
@@ -56,7 +57,7 @@ void ijkmp_android_set_surface_l(JNIEnv *env, IjkMediaPlayer *mp, jobject androi
 
 
     SDL_VoutAndroid_SetAndroidSurface(env, mp->ffplayer->vout, android_surface);
-    vdec_amc_set_surface(env, mp->ffplayer, android_surface);
+    ijkvdec_set_surface(env, mp->ffplayer, android_surface);
 }
 
 void ijkmp_android_set_surface(JNIEnv *env, IjkMediaPlayer *mp, jobject android_surface)

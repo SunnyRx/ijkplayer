@@ -52,7 +52,7 @@ typedef struct IJK_HWDecoderContext {
     int abort_request;
 } IJK_HWDecoderContext;
 
-static int vdec_amc_init(FFPlayer *ffp)
+static int ijkvdec_init(FFPlayer *ffp)
 {
     VideoState *is = ffp->is;
     IJK_HWDecoderContext *hw = ffp->hw_decoder_context;
@@ -69,14 +69,14 @@ static int vdec_amc_init(FFPlayer *ffp)
 
     JNIEnv *env = NULL;
     if (JNI_OK != SDL_JNI_SetupThreadEnv(&env)) {
-        ALOGE("vdec_amc_init: SetupThreadEnv failed\n");
+        ALOGE("ijkvdec_init: SetupThreadEnv failed\n");
         return -1;
     }
 
     hw->avctx = avctx;
     hw->acodec = SDL_AMediaCodecJava_createDecoderByType(env, codec_mime);
     if (!hw->acodec) {
-        ALOGE("vdec_amc_init: SDL_AMediaCodecJava_createDecoderByType failed\n");
+        ALOGE("ijkvdec_init: SDL_AMediaCodecJava_createDecoderByType failed\n");
         return -1;
     }
     // TODO: check codec name
@@ -126,7 +126,7 @@ fail:
     return -1;
 }
 
-void vdec_amc_set_surface(JNIEnv *env, FFPlayer *ffp, jobject android_surface)
+void ijkvdec_set_surface(JNIEnv *env, FFPlayer *ffp, jobject android_surface)
 {
     IJK_HWDecoderContext *hw = ffp->hw_decoder_context;
 
@@ -141,7 +141,7 @@ void vdec_amc_set_surface(JNIEnv *env, FFPlayer *ffp, jobject android_surface)
     SDL_UnlockMutex(hw->surface_mutex);
 }
 
-static int vdec_amc_enqueue_thread(void *arg)
+static int ijkvdec_enqueue_thread(void *arg)
 {
 #if 0
     FFPlayer   *ffp = arg;
@@ -157,7 +157,7 @@ static int vdec_amc_enqueue_thread(void *arg)
 
     JNIEnv *env = NULL;
     if (JNI_OK != SDL_JNI_SetupThreadEnv(&env)) {
-        ALOGE("vdec_amc_enqueue_thread: SetupThreadEnv failed\n");
+        ALOGE("ijkvdec_enqueue_thread: SetupThreadEnv failed\n");
         return -1;
     }
 
@@ -190,11 +190,11 @@ static int vdec_amc_enqueue_thread(void *arg)
     return 0;
 }
 
-int vdec_amc_start(FFPlayer *ffp)
+int ijkvdec_start(FFPlayer *ffp)
 {
     IJK_HWDecoderContext *hw = ffp->hw_decoder_context;
 
-    hw->amc_enqueue_tid = SDL_CreateThreadEx(&hw->_amc_enqueue_tid, vdec_amc_enqueue_thread, ffp, "ff_mediacodec_enqueue");
+    hw->amc_enqueue_tid = SDL_CreateThreadEx(&hw->_amc_enqueue_tid, ijkvdec_enqueue_thread, ffp, "ff_mediacodec_enqueue");
     if (!hw->amc_enqueue_tid)
         goto fail;
 
@@ -202,14 +202,14 @@ fail:
     return 0;
 }
 
-int vdec_amc_stop(FFPlayer *ffp)
+int ijkvdec_stop(FFPlayer *ffp)
 {
     IJK_HWDecoderContext *hw = ffp->hw_decoder_context;
     hw->abort_request = 0;
     return 0;
 }
 
-int vdec_amc_get_video_frame(FFPlayer *ffp, AVFrame *frame)
+int ijkvdec_get_video_frame(FFPlayer *ffp, AVFrame *frame)
 {
     VideoState *is  = ffp->is;
     IJK_HWDecoderContext *hw = ffp->hw_decoder_context;
@@ -219,7 +219,7 @@ int vdec_amc_get_video_frame(FFPlayer *ffp, AVFrame *frame)
 
     JNIEnv *env = NULL;
     if (JNI_OK != SDL_JNI_SetupThreadEnv(&env)) {
-        ALOGE("vdec_amc_enqueue_thread: SetupThreadEnv failed\n");
+        ALOGE("ijkvdec_amc_enqueue_thread: SetupThreadEnv failed\n");
         return -1;
     }
 
