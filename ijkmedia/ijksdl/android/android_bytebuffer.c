@@ -65,7 +65,7 @@ void *ASDK_ByteBuffer__getDirectBufferAddress(JNIEnv *env, jobject byte_buffer)
 void ASDK_ByteBuffer__setDataLimited(JNIEnv *env, jobject byte_buffer, void* data, size_t size)
 {
     jobject ret_byte_buffer = ASDK_ByteBuffer_limit(env, byte_buffer, size);
-    SDL_JNI_DeleteLocalRefP(env, &byte_buffer);
+    SDL_JNI_DeleteLocalRefP(env, &ret_byte_buffer);
     if (SDL_JNI_RethrowException(env)) {
         return;
     }
@@ -106,5 +106,5 @@ jobject ASDK_ByteBuffer_limit(JNIEnv *env, jobject byte_buffer, jint newLimit)
 {
     SDLTRACE("ASDK_ByteBuffer_limit");
 
-    return (*env)->CallObjectMethod(env, g_clazz.clazz, g_clazz.jmid_limit, newLimit);
+    return (*env)->CallObjectMethod(env, byte_buffer, g_clazz.jmid_limit, newLimit);
 }

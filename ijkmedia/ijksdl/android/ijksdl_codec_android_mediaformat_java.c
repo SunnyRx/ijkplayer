@@ -192,7 +192,7 @@ static void SDL_AMediaFormatJava_setBuffer(SDL_AMediaFormat* aformat, const char
     jobject android_byte_buffer  = opaque->android_byte_buffer;
     if (!android_byte_buffer) {
         android_byte_buffer = ASDK_ByteBuffer_allocateDirectAsGlobalRef(env, size);
-        if (SDL_JNI_CatchException(env) || android_byte_buffer) {
+        if (SDL_JNI_CatchException(env) || !android_byte_buffer) {
             ALOGE("SDL_AMediaFormatJava_setBuffer: ASDK_ByteBuffer_allocateDirectAsGlobalRef: failed");
             return;
         }
