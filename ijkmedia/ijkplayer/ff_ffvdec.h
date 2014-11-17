@@ -67,5 +67,7 @@ IJKFF_VideoDecoderFactory *ffvdec_factory_alloc(size_t opaque_size);
 void ffvdec_factory_free(IJKFF_VideoDecoderFactory *factory);
 void ffvdec_factory_free_p(IJKFF_VideoDecoderFactory **factory);
 
+IJKFF_VideoDecoder* ffvdec_open_from_factory(IJKFF_VideoDecoderFactory *factory, FFPlayer *ffp, Decoder *decoder);
+
 
 #endif

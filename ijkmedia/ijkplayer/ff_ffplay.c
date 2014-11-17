@@ -1510,8 +1510,21 @@ static int video_thread(void *arg)
     int last_vfilter_idx = 0;
 #endif
 
-    IJKFF_VideoDecoder* vdec = ffvdec_avcodec_create(get_video_frame);
-    ffvdec_setup(vdec, ffp, &is->viddec);
+    IJKFF_VideoDecoder* vdec = NULL;
+    if (ffp->ffvdec_factory) {
+        vdec = ffvdec_open_from_factory(ffp->ffvdec_factory, ffp, &is->viddec);
+    }
+
+    if (!vdec) {
+        ALOGE("failed to open custom video decoder, fall back to avcodec");
+        vdec = ffvdec_avcodec_create(get_video_frame);
+    }
+
+    if (!vdec) {
+        ALOGE("failed to open avcodec video decoder");
+        return -1;
+    }
+
     ffvdec_start(vdec);
 
     for (;;) {

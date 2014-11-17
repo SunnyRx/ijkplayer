@@ -128,3 +128,8 @@ void ffvdec_factory_free_p(IJKFF_VideoDecoderFactory **factory)
 
     ffvdec_factory_free(*factory);
 }
+
+IJKFF_VideoDecoder* ffvdec_open_from_factory(IJKFF_VideoDecoderFactory *factory, FFPlayer *ffp, Decoder *decoder)
+{
+    return factory->func_open_decoder(factory, ffp, decoder);
+}
